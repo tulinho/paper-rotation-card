@@ -1,0 +1,6 @@
+{
+  "name": "Paper-rotation-card",
+  "tagline": "A web component based on Material Design to show a card that performs three dimensional rotation.",
+  "body": "# &lt;paper-rotation-card&gt;\r\n\r\n> A web component based on Material Design to show a card that performs three dimensional rotation.\r\n\r\n## How-to\r\n```html\r\n<paper-rotation-card>\r\n  <face>\r\n    Card face content goes here!\r\n  </face>\r\n  <back>\r\n    Card back content goes here!\r\n  </back>\r\n</paper-rotation-card>\r\n```\r\n## Styling\r\n| Custom property | Description | Default  |\r\n| --- | --- | --- |\r\n| `--paper-rotation-card-icon-button-color` | Color applied to the icon button | `#757575` |\r\n| `--paper-rotation-card-text-color` | Color applied to the content of the card | `#757575` |\r\n| `--paper-rotation-card` | Mixin applied to the card element | `{}` |\r\n| `--paper-rotation-card-icon-button` | Mixin applied to the icon button | `{}` |\r\n| `--paper-rotation-card-facer` | Mixin applied to the face side of the card | `{}` |\r\n| `--paper-rotation-card-back` | Mixin applied to the back side of the card | `{}` |\r\n\r\n\r\n## License\r\nLicensed under the MIT license.\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
