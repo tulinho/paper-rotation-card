@@ -1,5 +1,6 @@
 {
   "name": "paper-rotation-card",
+  "version": "0.1.0",
   "description": "A Material Design based card element that is able to perform three dimensional rotations",
   "main": "paper-rotation-card.html",
   "moduleType": [],
