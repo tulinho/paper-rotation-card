@@ -21,21 +21,19 @@ Copyright (c) 2015 Marco Túlio. All rights reserved.
       :host {
         display: block;
         margin: 10px;
-        --paper-rotation-cart-width: 30%
-        --paper-rotation-icon-button-color: #757575;
-        --paper-rotation-text-color: #757575;
+        --paper-rotation-card-icon-button-color: #757575;
+        --paper-rotation-card-text-color: #757575;
+        @apply(--paper-rotation-card);
       } 
       :host ::content{
         @apply(--paper-font-body);
-        color: var(--paper-rotation-text-color);
+        color: var(--paper-rotation-card-text-color);
       }
       
       paper-icon-button.rotate-button{
-        color: var(--paper-rotation-icon-button-color); 
+        color: var(--paper-rotation-card-icon-button-color); 
+        @apply(--paper-rotation-card-icon-button);
       };
-      .paper-rotation-card-container{
-        width: 100%;
-      }
       .card-side{
         left: 0px;
         margin: 5px;
@@ -43,7 +41,11 @@ Copyright (c) 2015 Marco Túlio. All rights reserved.
         top:0px;
         width: calc(100% - 60px);
       }
-      .back{   
+      .face{
+        @apply(--paper-rotation-card-face);
+      }
+      .back{
+        @apply(--paper-rotation-card-back);
         background-color: #F5F5F5;
         -ms-transform: rotateX(180deg); /* IE 9 */
         -webkit-transform: rotateX(180deg); /* Chrome, Safari, Opera */
@@ -101,7 +103,6 @@ Copyright (c) 2015 Marco Túlio. All rights reserved.
           backface-visibility: hidden;
         }
       }
-
       @keyframes rotation-180-0{
         0% {
           -ms-transform: rotateX(180deg); /* IE 9 */
@@ -115,7 +116,6 @@ Copyright (c) 2015 Marco Túlio. All rights reserved.
           backface-visibility: hidden;
         }
       }
-
       @keyframes rotation-180-360{
         0% {
           -ms-transform: rotateX(180deg); /* IE 9 */
@@ -129,7 +129,6 @@ Copyright (c) 2015 Marco Túlio. All rights reserved.
           backface-visibility: hidden;
         }
       }
-
       @keyframes rotation-360-180{
         0% {
           -ms-transform: rotateX(360deg); /* IE 9 */
