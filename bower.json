@@ -9,13 +9,18 @@
     "material",
     "design",
     "paper",
-    "elements"
+    "elements", 
+    "web-components"
   ],
   "authors": [
     "Marco Túlio"
   ],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "http://tulinho.github.io/paper-rotation-card/",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tulinho/paper-rotation-card.git"
+  },
   "ignore": [
     "**/.*",
     "node_modules",
