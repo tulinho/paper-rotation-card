@@ -3,28 +3,33 @@
 
 # &lt;paper-rotation-card&gt;
 
-> A web component based on Material Design to show a card that performs three dimensional rotation.
+> This is an element based on Material Design that displays a card able to perform three dimensional rotations.
+Use `rotation-trigger` attribute to determine the element that will trigger the rotation animation.
 
 ## How-to
 ```html
 <paper-rotation-card>
-  <face>
-    Card face content goes here!
-  </face>
+  <front>
+    <p>Card face content goes here!</p>
+    <button rotation-trigger>Click me to rotate</button>
+  </front>
   <back>
-    Card back content goes here!
+    <p>Card back content goes here!</p>
+    <button rotation-trigger>Click me to rotate</button>
   </back>
 </paper-rotation-card>
 ```
 ## Styling
-| Custom property | Description | Default  |
-| --- | --- | --- |
-| `--paper-rotation-card-icon-button-color` | Color applied to the icon button | `#757575` |
-| `--paper-rotation-card-text-color` | Color applied to the content of the card | `#757575` |
-| `--paper-rotation-card` | Mixin applied to the card element | `{}` |
-| `--paper-rotation-card-icon-button` | Mixin applied to the icon button | `{}` |
-| `--paper-rotation-card-facer` | Mixin applied to the face side of the card | `{}` |
-| `--paper-rotation-card-back` | Mixin applied to the back side of the card | `{}` |
+
+The following custom properties and mixins are available for styling:
+
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--paper-rotation-card-height` | The card height | `250px`
+`--paper-rotation-card-width` | The card width | `500px`
+`--paper-rotation-card-front` | Mixing applied to the front face | `{}`
+`--paper-rotation-card-back` | Mixin applied to the front face | `{}`
 
 
 ## License
