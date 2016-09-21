@@ -1,0 +1,327 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-material/paper-material.html">
+<link rel="import" href="../paper-material/paper-material-shared-styles.html">
+
+<!--
+This is an element based on Material Design that displays a card able to perform three dimensional rotations.
+Use `rotation-trigger` attribute to determine the element that will trigger the rotation animation.
+
+Example:
+
+    <paper-rotation-card>
+      <front>
+        <p>Card face content goes here!</p>
+        <button rotation-trigger>Click me to rotate</button>
+      </front>
+      <back>
+        <p>Card back content goes here!</p>
+        <button rotation-trigger>Click me to rotate</button>
+      </back>
+    </paper-rotation-card>
+
+### Styling
+The following custom properties and mixins are available for styling:
+
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--paper-rotation-card-height` | The card height | `250px`
+`--paper-rotation-card-width` | The card width | `500px`
+`--paper-rotation-card-front` | Mixing applied to the front face | `{}`
+`--paper-rotation-card-back` | Mixin applied to the front face | `{}`
+
+@demo demo/index.html
+@hero hero.svg
+-->
+
+<dom-module id="paper-rotation-card">
+  <template>
+    <style is="custom-style" include="paper-material-shared-styles">
+      :host {
+        box-sizing: border-box;
+        display: block;
+        font-family: Arial, Helvetica, sans-serif;
+        height: var(--paper-rotation-card-height, 250px);
+        margin: 0;
+        padding: 0;
+        perspective: 500px;
+        position: relative;
+        width: var(--paper-rotation-card-width, 500px);
+        will-change: transform;
+      }
+      
+      .front,
+      .back {
+        backface-visibility: hidden;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 3px;
+        overflow: hidden;
+      }
+      
+      .front {
+        backface-visibility: hidden;
+        background: #ffffff;
+        color: #444;
+        @apply(--paper-rotation-card-front);
+      }
+      
+      .back {
+        backface-visibility: hidden;
+        background: #e8e3e3;
+        color: #444;
+        transform: rotateY(180deg);
+        @apply(--paper-rotation-card-back);
+      }
+      
+      .umbra,
+      .penumbra {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        backface-visibility: visible;
+      }
+      
+      .umbra {
+        -webkit-filter: blur(2px);
+        -moz-filter: blur(2px);
+        -o-filter: blur(2px);
+        -ms-filter: blur(2px);
+        filter: blur(2px);
+        transform: translateY(2px);
+        opacity: 0.3;
+      }
+      
+      .penumbra {
+        -webkit-filter: blur(12px);
+        -moz-filter: blur(12px);
+        -o-filter: blur(12px);
+        -ms-filter: blur(12px);
+        filter: blur(12px);
+        transform: translateY(12px);
+        opacity: 0;
+      }
+      
+      .flex {
+        display: flex;
+      }
+    </style>
+
+    <div id="umbra" class="umbra"></div>
+    <div id="penumbra" class="penumbra"></div>
+
+    <paper-material id="front" class="front" tabindex="-1">
+      <content select="front"></content>
+    </paper-material>
+
+    <paper-material id="back" class="back" tabindex="-1">
+      <content select="back"></content>
+    </paper-material>
+
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'paper-rotation-card',
+
+      _sides: {
+        FRONT: 1,
+        BACK: 2
+      },
+
+      properties: {
+        /**
+         * `axis`: indicates the axis through which the card will rotate.
+         **/
+        axis: {
+          type: String,
+          value: 'X'
+        },
+        /**
+         * `duration`: animation duration.
+         **/
+        duration: {
+          type: String,
+          value: '800'
+        },
+      },
+
+      attached: function () {
+        Array.from(this._buttons)
+          .forEach(b => {
+            b.addEventListener('click', _ => this.flip());
+          });
+      },
+
+      created: function () {
+        
+      },
+      
+      ready: function(){
+        this._locked = false;
+        this._side = this._sides.FRONT;
+        this._front = this.$.front;
+        this._back = this.$.back;
+        this._buttons = this.querySelectorAll('[rotation-trigger]');
+        this._umbra = this.$.umbra;
+        this._penumbra = this.$.penumbra;
+
+        this._front.inert = false;
+        this._back.inert = true;
+
+        this._duration = parseInt(this.duration, 10);
+        if (isNaN(this._duration)) {
+          this._duration = 800;
+        }
+
+        this._axis = this.axis || 'X';
+        if (this._axis.toUpperCase() === 'RANDOM') {
+          this._axis = (Math.random() > 0.5 ? 'Y' : 'X');
+        }        
+      },
+
+      // Performe the card rotation
+      flip() {
+        if (this._locked) {
+          return;
+        }
+
+        this._locked = true;
+
+        var scale = (500 + 200) / 500;
+
+        var sideOne = [
+          {
+            transform: `translateZ(-200px) rotate${this._axis}(0deg) scale(${scale})`
+          },
+          {
+            transform: `translateZ(-100px) rotate${this._axis}(0deg) scale(${scale})`,
+            offset: 0.15
+          },
+          {
+            transform: `translateZ(-100px) rotate${this._axis}(180deg) scale(${scale})`,
+            offset: 0.65
+          },
+          {
+            transform: `translateZ(-200px) rotate${this._axis}(180deg) scale(${scale})`
+          }
+    ];
+
+        var sideTwo = [
+          {
+            transform: `translateZ(-200px) rotate${this._axis}(180deg) scale(${scale})`
+          },
+          {
+            transform: `translateZ(-100px) rotate${this._axis}(180deg) scale(${scale})`,
+            offset: 0.15
+          },
+          {
+            transform: `translateZ(-100px) rotate${this._axis}(360deg) scale(${scale})`,
+            offset: 0.65
+          },
+          {
+            transform: `translateZ(-200px) rotate${this._axis}(360deg) scale(${scale})`
+          }
+    ];
+
+        var umbra = [
+          {
+            opacity: 0.3,
+            transform: `translateY(2px) rotate${this._axis}(0deg)`
+          },
+          {
+            opacity: 0.0,
+            transform: `translateY(62px) rotate${this._axis}(0deg)`,
+            offset: 0.15
+          },
+          {
+            opacity: 0.0,
+            transform: `translateY(62px) rotate${this._axis}(180deg)`,
+            offset: 0.65
+          },
+          {
+            opacity: 0.3,
+            transform: `translateY(2px) rotate${this._axis}(180deg)`
+          }
+    ];
+
+        var penumbra = [
+          {
+            opacity: 0.0,
+            transform: `translateY(2px) rotate${this._axis}(0deg)`
+          },
+          {
+            opacity: 0.5,
+            transform: `translateY(62px) rotate${this._axis}(0deg)`,
+            offset: 0.15
+          },
+          {
+            opacity: 0.5,
+            transform: `translateY(62px) rotate${this._axis}(180deg)`,
+            offset: 0.65
+          },
+          {
+            opacity: 0.0,
+            transform: `translateY(2px) rotate${this._axis}(180deg)`
+          }
+    ];
+
+        var timing = {
+          duration: this._duration,
+          iterations: 1,
+          easing: 'ease-in-out',
+          fill: 'forwards'
+        };
+
+        switch (this._side) {
+        case this._sides.FRONT:
+          this._front.animate(sideOne, timing);
+          this._back.animate(sideTwo, timing);
+
+          this._back.focus();
+          this._front.inert = true;
+          this._back.inert = false;
+          break;
+
+        case this._sides.BACK:
+          this._front.animate(sideTwo, timing);
+          this._back.animate(sideOne, timing);
+
+          this._front.focus();
+          this._front.inert = false;
+          this._back.inert = true;
+          break;
+
+        default:
+          throw new Error('Unknown side');
+        }
+
+        this._umbra.animate(umbra, timing);
+        this._penumbra.animate(penumbra, timing)
+          .onfinish = _ => {
+            this._locked = false;
+            this._side = (this._side === this._sides.FRONT) ?
+              this._sides.BACK :
+              this._sides.FRONT;
+          };
+      }
+    });
+  </script>
+</dom-module>
