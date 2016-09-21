@@ -1,5 +1,5 @@
 
-[Live Demo](https://tulinho.github.io/paper-rotation-card/demo/)
+[Live Demo](https://tulinho.github.io/paper-rotation-card/paper-rotation-card/)
 
 # &lt;paper-rotation-card&gt;
 
