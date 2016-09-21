@@ -1,216 +1,327 @@
 <!--
 @license
-Copyright (c) 2015 Marco Túlio. All rights reserved.
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../paper-material/paper-material.html">
 <link rel="import" href="../paper-material/paper-material-shared-styles.html">
-<link rel="import" href="../paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../paper-styles/color.html">
-<link rel="import" href="../paper-styles/default-theme.html">
 
-<link rel="import" href="../iron-icons/iron-icons.html">
-<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
-<link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
-      
+<!--
+This is an element based on Material Design that displays a card able to perform three dimensional rotations.
+Use `rotation-trigger` attribute to determine the element that will trigger the rotation animation.
+
+Example:
+
+    <paper-rotation-card>
+      <front>
+        <p>Card face content goes here!</p>
+        <button rotation-trigger>Click me to rotate</button>
+      </front>
+      <back>
+        <p>Card back content goes here!</p>
+        <button rotation-trigger>Click me to rotate</button>
+      </back>
+    </paper-rotation-card>
+
+### Styling
+The following custom properties and mixins are available for styling:
+
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--paper-rotation-card-height` | The card height | `250px`
+`--paper-rotation-card-width` | The card width | `500px`
+`--paper-rotation-card-front` | Mixing applied to the front face | `{}`
+`--paper-rotation-card-back` | Mixin applied to the front face | `{}`
+
+@demo demo/index.html
+@hero hero.svg
+-->
+
 <dom-module id="paper-rotation-card">
   <template>
-    <style is="custom-style" include="iron-flex iron-flex-alignment paper-material-shared-styles">      
+    <style is="custom-style" include="paper-material-shared-styles">
       :host {
+        box-sizing: border-box;
         display: block;
-        margin: 10px;
-        --paper-rotation-card-icon-button-color: #757575;
-        --paper-rotation-card-text-color: #757575;
-        @apply(--paper-rotation-card);
-      } 
-      :host ::content{
-        @apply(--paper-font-body);
-        color: var(--paper-rotation-card-text-color);
+        font-family: Arial, Helvetica, sans-serif;
+        height: var(--paper-rotation-card-height, 250px);
+        margin: 0;
+        padding: 0;
+        perspective: 500px;
+        position: relative;
+        width: var(--paper-rotation-card-width, 500px);
+        will-change: transform;
       }
       
-      paper-icon-button.rotate-button{
-        color: var(--paper-rotation-card-icon-button-color); 
-        @apply(--paper-rotation-card-icon-button);
-      };
-      .card-side{
-        left: 0px;
-        margin: 5px;
-        padding: 5px 15px 35px;
-        top:0px;
-        width: calc(100% - 60px);
-      }
-      .face{
-        @apply(--paper-rotation-card-face);
-      }
-      .back{
-        @apply(--paper-rotation-card-back);
-        background-color: #F5F5F5;
-        -ms-transform: rotateX(180deg); /* IE 9 */
-        -webkit-transform: rotateX(180deg); /* Chrome, Safari, Opera */
-        transform: rotateX(180deg);
+      .front,
+      .back {
         backface-visibility: hidden;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 3px;
+        overflow: hidden;
       }
       
-      .face-rotation{
-        animation-name: rotation-0-180;
-        animation-duration: 1s;
-        -webkit-animation-fill-mode:forwards; /*Chrome 16+, Safari 4+*/
-         -moz-animation-fill-mode:forwards; /*FF 5+*/
-         -o-animation-fill-mode:forwards; /*Not implemented yet*/
-         -ms-animation-fill-mode:forwards; /*IE 10+*/
-         animation-fill-mode:forwards; /*when the spec is finished*/
-      }
-      .face-reverse-rotation{
-        animation-name: rotation-180-0;
-        animation-duration: 1s;
-        -webkit-animation-fill-mode:forwards; /*Chrome 16+, Safari 4+*/
-         -moz-animation-fill-mode:forwards; /*FF 5+*/
-         -o-animation-fill-mode:forwards; /*Not implemented yet*/
-         -ms-animation-fill-mode:forwards; /*IE 10+*/
-         animation-fill-mode:forwards; /*when the spec is finished*/
-      }
-      .back-rotation{
-        animation-name: rotation-180-360;
-        animation-duration: 1s;
-        -webkit-animation-fill-mode:forwards; /*Chrome 16+, Safari 4+*/
-         -moz-animation-fill-mode:forwards; /*FF 5+*/
-         -o-animation-fill-mode:forwards; /*Not implemented yet*/
-         -ms-animation-fill-mode:forwards; /*IE 10+*/
-         animation-fill-mode:forwards; /*when the spec is finished*/
-      }
-      .back-reverse-rotation{
-        animation-name: rotation-360-180;
-        animation-duration: 1s;
-        -webkit-animation-fill-mode:forwards; /*Chrome 16+, Safari 4+*/
-         -moz-animation-fill-mode:forwards; /*FF 5+*/
-         -o-animation-fill-mode:forwards; /*Not implemented yet*/
-         -ms-animation-fill-mode:forwards; /*IE 10+*/
-         animation-fill-mode:forwards; /*when the spec is finished*/
-      }
-
-      @keyframes rotation-0-180{
-        0% {
-          -ms-transform: rotateX(0deg); /* IE 9 */
-          -webkit-transform: rotateX(0deg); /* Chrome, Safari, Opera */
-          transform: rotateX(0deg);
-        }
-        100% {
-          -ms-transform: rotateX(180deg); /* IE 9 */
-          -webkit-transform: rotateX(180deg); /* Chrome, Safari, Opera */
-          transform: rotateX(180deg);
-          backface-visibility: hidden;
-        }
-      }
-      @keyframes rotation-180-0{
-        0% {
-          -ms-transform: rotateX(180deg); /* IE 9 */
-          -webkit-transform: rotateX(180deg); /* Chrome, Safari, Opera */
-          transform: rotateX(180deg);
-        }
-        100% {
-          -ms-transform: rotateX(0deg); /* IE 9 */
-          -webkit-transform: rotateX(0deg); /* Chrome, Safari, Opera */
-          transform: rotateX(0deg);
-          backface-visibility: hidden;
-        }
-      }
-      @keyframes rotation-180-360{
-        0% {
-          -ms-transform: rotateX(180deg); /* IE 9 */
-          -webkit-transform: rotateX(180deg); /* Chrome, Safari, Opera */
-          transform: rotateX(180deg);
-        }
-        100% {
-          -ms-transform: rotateX(360deg); /* IE 9 */
-          -webkit-transform: rotateX(360deg); /* Chrome, Safari, Opera */
-          transform: rotateX(360deg);
-          backface-visibility: hidden;
-        }
-      }
-      @keyframes rotation-360-180{
-        0% {
-          -ms-transform: rotateX(360deg); /* IE 9 */
-          -webkit-transform: rotateX(360deg); /* Chrome, Safari, Opera */
-          transform: rotateX(360deg);
-          backface-visibility: hidden;
-        }
-        100% {
-          -ms-transform: rotateX(180deg); /* IE 9 */
-          -webkit-transform: rotateX(180deg); /* Chrome, Safari, Opera */
-          transform: rotateX(180deg);
-        }
+      .front {
+        backface-visibility: hidden;
+        background: #ffffff;
+        color: #444;
+        @apply(--paper-rotation-card-front);
       }
       
+      .back {
+        backface-visibility: hidden;
+        background: #e8e3e3;
+        color: #444;
+        transform: rotateY(180deg);
+        @apply(--paper-rotation-card-back);
+      }
+      
+      .umbra,
+      .penumbra {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        backface-visibility: visible;
+      }
+      
+      .umbra {
+        -webkit-filter: blur(2px);
+        -moz-filter: blur(2px);
+        -o-filter: blur(2px);
+        -ms-filter: blur(2px);
+        filter: blur(2px);
+        transform: translateY(2px);
+        opacity: 0.3;
+      }
+      
+      .penumbra {
+        -webkit-filter: blur(12px);
+        -moz-filter: blur(12px);
+        -o-filter: blur(12px);
+        -ms-filter: blur(12px);
+        filter: blur(12px);
+        transform: translateY(12px);
+        opacity: 0;
+      }
+      
+      .flex {
+        display: flex;
+      }
     </style>
-    <div id="cardContainer" class="paper-rotation-card-container">
-      <paper-material id="cardSideFace" elevation="1" class="card-side face">
-        <div class="layout horizontal">
-          <div class="flex"></div>
-          <paper-icon-button class="rotate-button" on-click="onFaceClick" id="faceButton" icon="{{icon}}"></paper-icon-button>
-        </div>
-        <content select="face"></content>
-      </paper-material>
-      <paper-material id="cardSideBack" elevation="1" class="card-side back">
-        <div class="layout horizontal">
-          <div class="flex"></div>
-          <paper-icon-button class="rotate-button" on-click="onBackClick" id="backButton" icon="{{icon}}"></paper-icon-button>
-        </div>
-        <content select="back"></content>
-      </paper-material>
-    </div>
-  </template>
-  <script>
-  (function() {
-    'use strict';
 
+    <div id="umbra" class="umbra"></div>
+    <div id="penumbra" class="penumbra"></div>
+
+    <paper-material id="front" class="front" tabindex="-1">
+      <content select="front"></content>
+    </paper-material>
+
+    <paper-material id="back" class="back" tabindex="-1">
+      <content select="back"></content>
+    </paper-material>
+
+
+  </template>
+
+  <script>
     Polymer({
       is: 'paper-rotation-card',
-      
-      properties: {
-        icon: {
-          type: String,
-          value: 'refresh'
-        }
+
+      _sides: {
+        FRONT: 1,
+        BACK: 2
       },
-      
-      behaviors: [
-        Polymer.IronResizableBehavior
-      ],
-      
-      listeners: {
-        'iron-resize': '_onIronResize'
+
+      properties: {
+        /**
+         * `axis`: indicates the axis through which the card will rotate.
+         **/
+        axis: {
+          type: String,
+          value: 'X'
+        },
+        /**
+         * `duration`: animation duration.
+         **/
+        duration: {
+          type: String,
+          value: '800'
+        },
+      },
+
+      attached: function () {
+        Array.from(this._buttons)
+          .forEach(b => {
+            b.addEventListener('click', _ => this.flip());
+          });
+      },
+
+      created: function () {
+        
       },
       
       ready: function(){
-      },
-      
-      _onIronResize: function(){  
-        this.$.cardSideBack.style.marginTop = - (this.$.cardSideFace.clientHeight +   5) + 'px';
-        if(this.$.cardSideBack.clientHeight < this.$.cardSideFace.clientHeight){
-          this.$.cardSideBack.style.marginBottom = 
-            (this.$.cardSideFace.clientHeight - this.$.cardSideBack.clientHeight + 10) + 'px';
+        this._locked = false;
+        this._side = this._sides.FRONT;
+        this._front = this.$.front;
+        this._back = this.$.back;
+        this._buttons = this.querySelectorAll('[rotation-trigger]');
+        this._umbra = this.$.umbra;
+        this._penumbra = this.$.penumbra;
+
+        this._front.inert = false;
+        this._back.inert = true;
+
+        this._duration = parseInt(this.duration, 10);
+        if (isNaN(this._duration)) {
+          this._duration = 800;
         }
-        
+
+        this._axis = this.axis || 'X';
+        if (this._axis.toUpperCase() === 'RANDOM') {
+          this._axis = (Math.random() > 0.5 ? 'Y' : 'X');
+        }        
       },
-            
-      onFaceClick: function(){
-        this.toggleClass('face-rotation', true, this.$.cardSideFace);
-        this.toggleClass('face-reverse-rotation', false, this.$.cardSideFace);
-        this.toggleClass('back-rotation', true, this.$.cardSideBack);
-        this.toggleClass('back-reverse-rotation', false, this.$.cardSideBack);
-        this.$.backButton.focus();
-      },
-      
-      onBackClick: function(){        
-        this.toggleClass('face-rotation', false, this.$.cardSideFace);
-        this.toggleClass('face-reverse-rotation', true, this.$.cardSideFace);
-        this.toggleClass('back-rotation', false, this.$.cardSideBack);
-        this.toggleClass('back-reverse-rotation', true, this.$.cardSideBack);
-        this.$.faceButton.focus();
+
+      // Performe the card rotation
+      flip() {
+        if (this._locked) {
+          return;
+        }
+
+        this._locked = true;
+
+        var scale = (500 + 200) / 500;
+
+        var sideOne = [
+          {
+            transform: `translateZ(-200px) rotate${this._axis}(0deg) scale(${scale})`
+          },
+          {
+            transform: `translateZ(-100px) rotate${this._axis}(0deg) scale(${scale})`,
+            offset: 0.15
+          },
+          {
+            transform: `translateZ(-100px) rotate${this._axis}(180deg) scale(${scale})`,
+            offset: 0.65
+          },
+          {
+            transform: `translateZ(-200px) rotate${this._axis}(180deg) scale(${scale})`
+          }
+    ];
+
+        var sideTwo = [
+          {
+            transform: `translateZ(-200px) rotate${this._axis}(180deg) scale(${scale})`
+          },
+          {
+            transform: `translateZ(-100px) rotate${this._axis}(180deg) scale(${scale})`,
+            offset: 0.15
+          },
+          {
+            transform: `translateZ(-100px) rotate${this._axis}(360deg) scale(${scale})`,
+            offset: 0.65
+          },
+          {
+            transform: `translateZ(-200px) rotate${this._axis}(360deg) scale(${scale})`
+          }
+    ];
+
+        var umbra = [
+          {
+            opacity: 0.3,
+            transform: `translateY(2px) rotate${this._axis}(0deg)`
+          },
+          {
+            opacity: 0.0,
+            transform: `translateY(62px) rotate${this._axis}(0deg)`,
+            offset: 0.15
+          },
+          {
+            opacity: 0.0,
+            transform: `translateY(62px) rotate${this._axis}(180deg)`,
+            offset: 0.65
+          },
+          {
+            opacity: 0.3,
+            transform: `translateY(2px) rotate${this._axis}(180deg)`
+          }
+    ];
+
+        var penumbra = [
+          {
+            opacity: 0.0,
+            transform: `translateY(2px) rotate${this._axis}(0deg)`
+          },
+          {
+            opacity: 0.5,
+            transform: `translateY(62px) rotate${this._axis}(0deg)`,
+            offset: 0.15
+          },
+          {
+            opacity: 0.5,
+            transform: `translateY(62px) rotate${this._axis}(180deg)`,
+            offset: 0.65
+          },
+          {
+            opacity: 0.0,
+            transform: `translateY(2px) rotate${this._axis}(180deg)`
+          }
+    ];
+
+        var timing = {
+          duration: this._duration,
+          iterations: 1,
+          easing: 'ease-in-out',
+          fill: 'forwards'
+        };
+
+        switch (this._side) {
+        case this._sides.FRONT:
+          this._front.animate(sideOne, timing);
+          this._back.animate(sideTwo, timing);
+
+          this._back.focus();
+          this._front.inert = true;
+          this._back.inert = false;
+          break;
+
+        case this._sides.BACK:
+          this._front.animate(sideTwo, timing);
+          this._back.animate(sideOne, timing);
+
+          this._front.focus();
+          this._front.inert = false;
+          this._back.inert = true;
+          break;
+
+        default:
+          throw new Error('Unknown side');
+        }
+
+        this._umbra.animate(umbra, timing);
+        this._penumbra.animate(penumbra, timing)
+          .onfinish = _ => {
+            this._locked = false;
+            this._side = (this._side === this._sides.FRONT) ?
+              this._sides.BACK :
+              this._sides.FRONT;
+          };
       }
     });
-  })();
   </script>
 </dom-module>

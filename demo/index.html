@@ -1,5 +1,6 @@
 <!doctype html>
 <!--
+@license
 Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
 The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
@@ -8,42 +9,195 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <html>
-<head>
 
+<head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-
-  <title>paper-drawer-panel</title>
-
-  <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-
-  <link rel="import" href="../bower_components/polymer/polymer.html">
+  <title>paper-rotation-card Demo</title>
+  <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
   <link rel="import" href="../paper-rotation-card.html">
-</head>
-<body>
-  <style>
-    paper-rotation-card{
-      flex: 6;
+  <link rel="import" href="../../paper-icon-button/paper-icon-button.html">
+  <link rel="import" href="../../iron-icons/iron-icons.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <style is="custom-style">
+    paper-rotation-card {
+      --paper-rotation-card-width: 400px;
+      --paper-rotation-card-height: 250px;
+    }
+    
+    paper-rotation-card#card1 {
+      --paper-rotation-card-front: {
+        background-color: #7B1FA2;
+        color: #fff;
+      }
+      --paper-rotation-card-back: {
+        background-color: #F3E5F5;
+        color: #757575;
+      }
+    }
+    
+    paper-rotation-card#card2 {
+      --paper-rotation-card-front: {
+        background-color: #FFEB3B;
+        color: #212121;
+      }
+      --paper-rotation-card-back: {
+        background-color: #FFF9C4;
+        color: #212121;
+      }
+    }
+    
+    paper-rotation-card#card3 {
+      --paper-rotation-card-front: {
+        background-color: #F44336;
+        color: #fff;
+      }
+      --paper-rotation-card-back: {
+        background-color: #FFCDD2;
+        color: #212121;
+      }
     }
   </style>
-  <div style="display: flex;">
-    <paper-rotation-card>
-      <face>
-        <h3>Card Face</h3>
-      </face>
-      <back>
-        <h3>Card Back</h3>
-      </back>
-    </paper-rotation-card>
-    <paper-rotation-card>
-      <face>
-        <h3>Card Face</h3>
-      </face>
-      <back>
-        <h3>Card Back</h3>
-      </back>
-    </paper-rotation-card>
+  <style>
+    .layout-flex {
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -ms-flex-direction: row;
+      -webkit-flex-direction: row;
+      flex-direction: row;
+    }
+    
+    .flex {
+      -ms-flex: 1 1 0.000000001px;
+      -webkit-flex: 1;
+      flex: 1;
+      -webkit-flex-basis: 0.000000001px;
+      flex-basis: 0.000000001px;
+    }
+  </style>
+</head>
+
+<body unresolved>
+
+  <p>Examples of <code>&lt;paper-rotation-card&gt;</code>:</p>
+
+  <div style="display:inline-block">
+    <h4>Vertical:</h4>
+    <demo-snippet>
+      <template>
+        <paper-rotation-card id="card1" duration="800" axis="Y">
+          <front>
+            <div style="padding: 20px;">
+              <div class="layout-flex">
+                <div class="flex"></div>
+                <paper-icon-button rotation-trigger icon="refresh"></paper-icon-button>
+              </div>
+              <h2 data-toggle>Front Face</h2>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Cras faucibus erat sodales, placerat dui nec, consectetur enim. 
+                Nullam eleifend nulla in nulla maximus, aliquet varius ante ullamcorper.
+              </p>
+            </div>
+          </front>
+          <back>
+            <div style="padding: 20px;">
+              <div class="layout-flex">
+                <div class="flex"></div>
+                <paper-icon-button rotation-trigger icon="refresh"></paper-icon-button>
+              </div>
+              <h2 data-toggle>Back Face</h2>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Cras faucibus erat sodales, placerat dui nec, consectetur enim. 
+                Nullam eleifend nulla in nulla maximus, aliquet varius ante ullamcorper. 
+              </p>
+            </div>
+          </back>
+        </paper-rotation-card>
+      </template>
+    </demo-snippet>
   </div>
-  
+
+  <div style="display:inline-block">
+    <h4>Horizontal:</h4>
+    <demo-snippet>
+      <template>
+        <paper-rotation-card id="card2" duration="800" axis="X">
+          <front>
+            <div style="padding: 20px;">
+              <div class="layout-flex">
+                <div class="flex"></div>
+                <paper-icon-button rotation-trigger icon="refresh"></paper-icon-button>
+              </div>
+              <h2>Front Face</h2>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Cras faucibus erat sodales, placerat dui nec, consectetur enim. 
+                Nullam eleifend nulla in nulla maximus, aliquet varius ante ullamcorper. 
+              </p>
+            </div>
+          </front>
+          <back>
+            <div style="padding: 20px;">
+              <div class="layout-flex">
+                <div class="flex"></div>
+                <paper-icon-button rotation-trigger icon="refresh"></paper-icon-button>
+              </div>
+              <h2>Back Face</h2>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Cras faucibus erat sodales, placerat dui nec, consectetur enim. 
+                Nullam eleifend nulla in nulla maximus, aliquet varius ante ullamcorper. 
+              </p>
+            </div>
+          </back>
+        </paper-rotation-card>
+      </template>
+    </demo-snippet>
+  </div>
+
+  <div style="display:inline-block">
+    <h4>Random:</h4>
+    <demo-snippet>
+      <template>
+        <paper-rotation-card id="card3" duration="800" axis="RANDOM">
+          <front>
+            <div style="padding: 20px;">
+              <div class="layout-flex">
+                <div class="flex"></div>
+                <paper-icon-button rotation-trigger icon="refresh"></paper-icon-button>
+              </div>
+              <h2>Front Face</h2>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Cras faucibus erat sodales, placerat dui nec, consectetur enim. 
+                Nullam eleifend nulla in nulla maximus, aliquet varius ante ullamcorper. 
+              </p>
+            </div>
+          </front>
+          <back>
+            <div style="padding: 20px;">
+              <div class="layout-flex">
+                <div class="flex"></div>
+                <paper-icon-button rotation-trigger icon="refresh"></paper-icon-button>
+              </div>
+              <h2>Back Face</h2>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Cras faucibus erat sodales, placerat dui nec, consectetur enim. 
+                Nullam eleifend nulla in nulla maximus, aliquet varius ante ullamcorper. 
+              </p>
+            </div>
+          </back>
+        </paper-rotation-card>
+      </template>
+    </demo-snippet>
+  </div>
+  <script>
+  </script>
+
 </body>
+
 </html>
